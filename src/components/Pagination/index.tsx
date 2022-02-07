@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { HStack, Box } from '@chakra-ui/react';
+=======
+import { HStack, Button, Box } from '@chakra-ui/react';
+>>>>>>> a9cc904940441bfa63d60ac3774fb7f299d81904
 import { PaginationItem } from './PaginationItem';
 
 export function Pagination() {
