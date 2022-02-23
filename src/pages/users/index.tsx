@@ -21,14 +21,10 @@ import { useQuery } from 'react-query';
 import { Header } from '../../components/Header';
 import { Pagination } from '../../components/Pagination';
 import { Sidebar } from '../../components/Sidebar';
+import { getUsersService } from '../../services/users/get-users';
 
 export default function UserList() {
-  const { data, isLoading, error } = useQuery('users', async () => {
-    const response = await fetch('http://localhost:3000/api/users');
-    const data = response.json();
-
-    return data;
-  });
+  const { data, isLoading, error } = useQuery('users', getUsersService);
 
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -83,20 +79,22 @@ export default function UserList() {
                 </Thead>
 
                 <Tbody>
-                  <Tr>
-                    <Td px={['4', '4', '6']}>
-                      <Checkbox colorScheme="pink" />
-                    </Td>
-                    <Td>
-                      <Box>
-                        <Text fontWeight="bold">Tiago Santos</Text>
-                        <Text fontSize="sm" color="gray.300">
-                          tiagosan040@gmail.com
-                        </Text>
-                      </Box>
-                    </Td>
-                    {isWideVersion && <Td>22 de janeiro, 2022</Td>}
-                  </Tr>
+                  {data.map((user) => (
+                    <Tr key={user.id}>
+                      <Td px={['4', '4', '6']}>
+                        <Checkbox colorScheme="pink" />
+                      </Td>
+                      <Td>
+                        <Box>
+                          <Text fontWeight="bold">{user.name}</Text>
+                          <Text fontSize="sm" color="gray.300">
+                            {user.email}
+                          </Text>
+                        </Box>
+                      </Td>
+                      {isWideVersion && <Td>{user.createdAt}</Td>}
+                    </Tr>
+                  ))}
                 </Tbody>
               </Table>
 
