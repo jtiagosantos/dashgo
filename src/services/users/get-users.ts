@@ -1,11 +1,5 @@
+import { User } from '../../types/user';
 import { api } from '../axios/api';
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  createdAt: string;
-}
 
 interface GetUsersResponse {
   users: Array<User>;
