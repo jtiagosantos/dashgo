@@ -24,7 +24,10 @@ import { Sidebar } from '../../components/Sidebar';
 import { getUsersService } from '../../services/users/get-users';
 
 export default function UserList() {
-  const { data, isLoading, error } = useQuery('users', getUsersService);
+  const { data, isLoading, isFetching, error } = useQuery(
+    'users',
+    getUsersService,
+  );
 
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -42,6 +45,9 @@ export default function UserList() {
           <Flex mb="8" justify="space-between" align="center">
             <Heading size="lg" fontWeight="normal">
               Usuários
+              {!isLoading && isFetching && (
+                <Spinner size="sm" color="gray.500" ml="4" />
+              )}
             </Heading>
 
             <Link href="/users/create" passHref>
