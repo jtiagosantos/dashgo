@@ -1,3 +1,5 @@
+import { api } from '../axios/api';
+
 interface GetUsersResponse {
   id: string;
   name: string;
@@ -5,13 +7,8 @@ interface GetUsersResponse {
   createdAt: string;
 }
 
-interface Users {
-  users: Array<GetUsersResponse>;
-}
-
 export async function getUsersService(): Promise<Array<GetUsersResponse>> {
-  const response = await fetch('http://localhost:3000/api/users');
-  const data = (await response.json()) as Users;
+  const { data } = await api.get('users');
 
   const users = data.users.map((user) => ({
     ...user,
