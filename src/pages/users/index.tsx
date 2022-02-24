@@ -68,7 +68,7 @@ export default function UserList() {
               <Spinner />
             </Flex>
           ) : error ? (
-            <Flex justify="center">
+            <Flex justify="center" mt="20">
               <Text>Falha ao obter os dados dos usuários</Text>
             </Flex>
           ) : (
