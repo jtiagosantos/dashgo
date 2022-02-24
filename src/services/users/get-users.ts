@@ -1,14 +1,27 @@
 import { api } from '../axios/api';
 
-interface GetUsersResponse {
+interface User {
   id: string;
   name: string;
   email: string;
   createdAt: string;
 }
 
-export async function getUsersService(): Promise<Array<GetUsersResponse>> {
-  const { data } = await api.get('users');
+interface GetUsersResponse {
+  users: Array<User>;
+  totalCount: number;
+}
+
+export async function getUsersService(
+  currentPage: number,
+): Promise<GetUsersResponse> {
+  const { data, headers } = await api.get('users', {
+    params: {
+      page: currentPage,
+    },
+  });
+
+  const totalCount = Number(headers['x-total-count']);
 
   const users = data.users.map((user) => ({
     ...user,
@@ -19,5 +32,8 @@ export async function getUsersService(): Promise<Array<GetUsersResponse>> {
     }),
   }));
 
-  return users;
+  return {
+    users,
+    totalCount,
+  };
 }

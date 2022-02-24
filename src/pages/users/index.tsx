@@ -22,11 +22,14 @@ import { Header } from '../../components/Header';
 import { Pagination } from '../../components/Pagination';
 import { Sidebar } from '../../components/Sidebar';
 import { getUsersService } from '../../services/users/get-users';
+import { useState } from 'react';
 
 export default function UserList() {
+  const [currentPage, setCurrentPage] = useState(1);
+
   const { data, isLoading, isFetching, error } = useQuery(
-    'users',
-    getUsersService,
+    ['users', currentPage],
+    () => getUsersService(currentPage),
   );
 
   const isWideVersion = useBreakpointValue({
@@ -85,7 +88,7 @@ export default function UserList() {
                 </Thead>
 
                 <Tbody>
-                  {data.map((user) => (
+                  {data.users.map((user) => (
                     <Tr key={user.id}>
                       <Td px={['4', '4', '6']}>
                         <Checkbox colorScheme="pink" />
@@ -105,10 +108,9 @@ export default function UserList() {
               </Table>
 
               <Pagination
-                totalCountOfRegisters={200}
-                currentPage={4}
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                onChangePage={() => {}}
+                totalCountOfRegisters={data.totalCount}
+                currentPage={currentPage}
+                onChangePage={setCurrentPage}
               />
             </>
           )}
